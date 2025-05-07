@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  movie-app:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - movie:/app  # Use named volume instead of bind mount
+    networks:
+      - movie-net
+
+volumes:
+  movie:  # Reference your named volume here
+
+networks:
+  movie-net:
+    driver: bridge

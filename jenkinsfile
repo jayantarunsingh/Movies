@@ -34,14 +34,21 @@ pipeline {
             }
         }
 
+        // stage('Deploy Container') {
+        //     steps {
+        //         bat 'docker stop movie-app || echo Container not running'
+        //         bat 'docker rm movie-app || echo Container not found'
+        //         bat 'docker pull jayant1054/movie-recommender:latest'
+        //         bat 'docker run -d -p 8080:80 --name movie-app jayant1054/movie-recommender:latest'
+        //     }
+        // }
         stage('Deploy Container') {
-            steps {
-                bat 'docker stop movie-app || echo Container not running'
-                bat 'docker rm movie-app || echo Container not found'
-                bat 'docker pull jayant1054/movie-recommender:latest'
-                bat 'docker run -d -p 8080:80 --name movie-app jayant1054/movie-recommender:latest'
-            }
-        }
+    steps {
+        bat 'docker compose down || echo "No containers to stop"'  // Stop and remove any running containers
+        bat 'docker compose pull'                                   // Pull latest image (if using external image)
+        bat 'docker compose up -d --build'                          // Rebuild and start in detached mode
+    }
+}
     }
 
     post {
